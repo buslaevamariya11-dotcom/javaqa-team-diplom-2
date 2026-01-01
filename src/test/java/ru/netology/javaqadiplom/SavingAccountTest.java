@@ -306,5 +306,19 @@ public class SavingAccountTest {
         Assertions.assertEquals(expectedBalance, actualBalance);
     }
 
+// проверки метода yearChange
 
+    @Test
+
+    public void shouldShowPercentForBalance() {
+        SavingAccount account = new SavingAccount(
+                783,
+                50,
+                10_000,
+                5
+        );
+
+        Assertions.assertEquals(39, account.yearChange());
+
+    }
 }
