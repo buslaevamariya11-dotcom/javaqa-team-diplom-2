@@ -113,7 +113,6 @@ public class SavingAccountTest {
     }
 
 
-
     // проверки метода add
     @Test
     public void shouldAddLessThanMaxBalance() {
