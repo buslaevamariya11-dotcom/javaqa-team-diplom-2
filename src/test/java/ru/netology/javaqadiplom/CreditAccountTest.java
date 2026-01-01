@@ -79,4 +79,35 @@ public class CreditAccountTest {
         Assertions.assertEquals(
                 -12, account.yearChange());
     }
+
+    @Test
+    public void shouldCreateAccountWithZeroRate() {
+        CreditAccount account = new CreditAccount(
+                0,
+                5_000,
+                0);
+        Assertions.assertEquals(
+                0, account.getRate());
+    }
+
+    @Test
+    public void shouldThrowExceptionForNegativeInitialBalance() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(
+                    -1_000,
+                    5_000,
+                    15);
+        });
+    }
+
+    @Test
+    public void shouldNotChangeBalanceIfPayIsFailed() {
+        CreditAccount account = new CreditAccount(
+                0,
+                1_000,
+                15);
+        account.pay(
+                5_000);
+        Assertions.assertEquals(0, account.getBalance());
+    }
 }
