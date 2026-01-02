@@ -18,10 +18,15 @@ public class Bank {
             return false;
         }
         if (from.pay(amount)) {
-            to.add(amount);
+
+            if(!to.add(amount)){
+                from.add(amount);
+                return false;
+            }
         } else {
             return false;
         }
+
         return true;
     }
 }
