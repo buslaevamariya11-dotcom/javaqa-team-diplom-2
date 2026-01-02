@@ -2,9 +2,6 @@ package ru.netology.javaqadiplom;
 
 /**
  * Сберегательный счёт
- * Может иметь баланс только в пределах от указанного минимального до указанного максимального включительно.
- * Не может уходить в минус (минимальный баланс не может быть отрицательным).
- * Имеет ставку - количество процентов годовых на остаток.
  */
 public class SavingAccount extends Account {
     protected int minBalance;
@@ -20,12 +17,29 @@ public class SavingAccount extends Account {
      * @param maxBalance     - максимальный баланс
      * @param rate           - неотрицательное число, ставка в процентах годовых на остаток
      */
+
     public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
         if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
             );
         }
+        if (minBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Минимальный баланс не может быть отрицательным"
+            );
+        }
+        if (minBalance > maxBalance) {
+            throw new IllegalArgumentException(
+                    "Минимальный баланс не может быть больше максимального"
+            );
+        }
+        if (initialBalance < minBalance || initialBalance > maxBalance) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс " + initialBalance + " вне диапазона допустимых значений"
+            );
+        }
+
         this.balance = initialBalance;
         this.minBalance = minBalance;
         this.maxBalance = maxBalance;
@@ -41,14 +55,14 @@ public class SavingAccount extends Account {
      *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
-     */
+
     @Override
     public boolean pay(int amount) {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > minBalance) {
+        if (balance - amount >= minBalance) {
+            balance = balance - amount;
             return true;
         } else {
             return false;
@@ -67,13 +81,14 @@ public class SavingAccount extends Account {
      * @return true если операция прошла успешно, false иначе.
      * @return
      */
+
     @Override
     public boolean add(int amount) {
         if (amount <= 0) {
             return false;
         }
-        if (balance + amount < maxBalance) {
-            balance = amount;
+        if (balance + amount <= maxBalance) {
+            balance = balance + amount;
             return true;
         } else {
             return false;
@@ -87,10 +102,10 @@ public class SavingAccount extends Account {
      * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
      *
      * @return
-     */
+
     @Override
     public int yearChange() {
-        return balance / 100 * rate;
+        return balance * rate / 100;
     }
 
     public int getMinBalance() {
