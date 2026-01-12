@@ -103,8 +103,8 @@ public class SavingAccount extends Account {
      * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
      *
      * @return
-    */
-    
+     */
+
     @Override
     public int yearChange() {
         return balance * rate / 100;
